@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Lab 2</title>
+  
+
+  
+  
+  <script type="text/javascript">
+
+	function generateMainQuery() {
+  
+  //
+  // Add the beginning of the query
+  //
+    document.getElementById('taQuery').value = 
+      "SELECT * FROM search_workshop.instrument_rated_searchable \n"
+            + "WHERE \n";
+
+  //
+  // If a specific industry was selected from the drop-down, add it to the query
+  //
+    if(document.getElementById('drpIndustries').value != "Select...") {
+
+      // If an industry was selected, use it in the query
+      //
+      var e = document.getElementById('drpIndustries');
+      document.getElementById('taQuery').value +=
+      "instrument_industry = '" + e.options[e.selectedIndex].value + "' AND \n";
+    }
+
+  //
+  // Add the first term (required) to the query.  Since this is just a demo, we just assume valid data was entered.
+  // We don't validate.
+  // We start with an open paren because this may be a complex OR clause that has to be treated as a single unit
+  // if there is a previous AND clause.
+
+    document.getElementById('taQuery').value += "( description LIKE '%" + document.getElementById('txtSearch1').value + "%' \n";
+
+  //
+  // Now add terms 2 and 3 if present
+    if(document.getElementById('txtSearch2').value != 'Enter term...') {
+      document.getElementById('taQuery').value += "OR description LIKE '%" + document.getElementById('txtSearch2').value + "%' \n";
+    }
+
+    if(document.getElementById('txtSearch3').value != 'Enter term...') {
+      document.getElementById('taQuery').value += "OR description LIKE '%" + document.getElementById('txtSearch3').value + "%' \n";
+    }
+
+  //
+  // Add the closing paren for the AND clause and the closing semi-colon for the entire query
+    document.getElementById('taQuery').value += ");";
+	}
+
+
+  </script></head><body>
+<h2><span style="font-family: Calibri;">RightVest Customer Service - Free-form term search</span><br>
+</h2>
+
+<table style="text-align: left; width: 861px; height: 242px;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; height: 46px;"><span style="font-family: Calibri;"><span style="font-weight: bold;">Choose an industry (optional)</span></span><br>
+      </td>
+      <td style="vertical-align: top;">
+      <select name="drpIndustries" id="drpIndustries">
+      <option selected="selected">Select...</option>
+      <option>Finance: Consumer Services</option>
+      <option>Hotels/Resorts</option>
+      <option>Major Pharmaceuticals</option>
+      <option>Real Estate Investment Trusts</option>
+      <option>Telecommunications Equipment</option>
+      </select>
+<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-family: Calibri;"><span style="font-weight: bold;">Search term 1 (required)<br>
+      </span></span></td>
+      <td style="vertical-align: top;"><input value="Enter term..." name="txtSearch1" maxlength="100" size="100" id="txtSearch1"></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-family: Calibri;"><span style="font-weight: bold;">Search term 2 (optional)<br>
+      </span></span></td>
+      <td style="vertical-align: top;"><input value="Enter term..." name="txtSearch2" maxlength="100" size="100" id="txtSearch2"></td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-family: Calibri;"><span style="font-weight: bold;">Search term 3 (optional)<br>
+      </span></span></td>
+      <td style="vertical-align: top;"><input value="Enter term..." name="txtSearch3" maxlength="100" size="100" id="txtSearch3"></td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    <tr align="center">
+      <td colspan="2" rowspan="1" style="vertical-align: top;"><button value="GenQry" name="btnSubmit" onclick="generateMainQuery()">Generate Query</button><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3><span style="font-family: Calibri;">Query generated
+server-side...</span></h3>
+
+<textarea cols="100" rows="20" id="taQuery"></textarea><br>
+
+<br>
+
+</body></html>
